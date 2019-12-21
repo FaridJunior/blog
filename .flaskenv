@@ -1,0 +1,3 @@
+FLASK_APP=blog
+FLASK_DEBUG=1
+SECRET_KEY=playfootball
