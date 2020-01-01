@@ -1,18 +1,25 @@
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user
-from app.models import User
+from app.models import User, Post
 from flask_login import logout_user, login_required
 from app import app, db
-from app.forms import RegistrationForm, EditProfileForm, LoginForm
+from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm
 from datetime import datetime
 from flask import request
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    posts = current_user.posts
-    return render_template("index.html", title='Home Page', posts=posts)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+        flash("post was published")
+        return redirect(url_for("index"))
+    posts = current_user.followed_posts().all()
+    return render_template("index.html", title='Home Page', posts=posts, form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -83,6 +90,7 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
 
+
 @app.route('/follow/<username>')
 @login_required
 def follow(username):
@@ -97,6 +105,7 @@ def follow(username):
     db.session.commit()
     flash('You are following {}!'.format(username))
     return redirect(url_for('user', username=username))
+
 
 @app.route('/unfollow/<username>')
 @login_required
