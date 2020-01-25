@@ -1,0 +1,18 @@
+.color-body{
+    background-color: brown;
+}
+.div-my{
+    background-color: blueviolet;
+}
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+.avatar-bg {
+    vertical-align: middle;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }

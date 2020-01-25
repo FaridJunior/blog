@@ -24,6 +24,7 @@ class UserModelCase(unittest.TestCase):
                                          'd4c74594d841139328695756648b6bd6'
                                          '?d=robohash&s=128'))
 
+    
     def test_follow(self):
         u1 = User(username='john', email='john@example.com')
         u2 = User(username='susan', email='susan@example.com')
@@ -84,6 +85,18 @@ class UserModelCase(unittest.TestCase):
         self.assertEqual(f2, [p2, p3])
         self.assertEqual(f3, [p3, p4])
         self.assertEqual(f4, [p4])
+    # just play with tests
+    def test_edit_profile(self):
+        u1 = User(username="ali", email="ali@example.com")
+        db.session.add(u1)
+        db.session.commit()
+        u1.about_me = "i love banana"
+        db.session.commit()
+        about_me_text = u1.about_me
+        self.assertEqual(about_me_text,"i love banana")
 
+
+
+        
 if __name__ == '__main__':
     unittest.main(verbosity=2)
